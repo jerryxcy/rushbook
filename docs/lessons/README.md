@@ -30,7 +30,7 @@ Service、build conventions、health endpoints與第一個CI build。
 
 證據：`./gradlew test`能啟動兩個application contexts。
 
-### Lesson 02 — 建立Events與database migrations
+### [Lesson 02 — 建立 Events 與 database migrations](02-events-and-database-migrations.md)
 
 導入PostgreSQL、Flyway、Spring JDBC、schema ownership、Event creation、
 validation與Testcontainers。
