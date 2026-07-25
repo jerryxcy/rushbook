@@ -1,0 +1,33 @@
+<!doctype html>
+<!--
+  THROWAWAY PROTOTYPE — NEVER MERGE TO MAIN
+  Three Simulation Dashboard variants, switchable via ?variant=A|B|C.
+-->
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="RushBook Simulation Dashboard throwaway UI prototype"
+    />
+    <title>RushBook — Simulation Dashboard Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app"></main>
+
+    <nav class="prototype-switcher" aria-label="Prototype variant switcher">
+      <button id="previous-variant" type="button" aria-label="上一個版本">
+        ←
+      </button>
+      <div>
+        <span class="prototype-kicker">THROWAWAY UI PROTOTYPE</span>
+        <strong id="variant-label"></strong>
+      </div>
+      <button id="next-variant" type="button" aria-label="下一個版本">→</button>
+    </nav>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
