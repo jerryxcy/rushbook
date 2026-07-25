@@ -23,7 +23,7 @@ Lesson 00 是 5–10 分鐘的快速導讀；以下完整流程從 Lesson 01 開
 
 證據：能用自己的話說明RushBook解決的問題與三個核心元件的責任。
 
-### Lesson 01 — 建立two-service skeleton
+### [Lesson 01 — 建立 two-service skeleton](01-two-service-skeleton.md)
 
 建立Java 25／Spring Boot 4.1 Gradle monorepo、Booking Service、Notification
 Service、build conventions、health endpoints與第一個CI build。

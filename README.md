@@ -14,7 +14,8 @@ recovery。
 ## 從這裡開始
 
 1. [Lesson 00：5–10 分鐘看懂 RushBook](docs/lessons/00-design-the-system.md)
-2. [查看完整課程目錄](docs/lessons/README.md)
+2. [Lesson 01：建立 two-service skeleton](docs/lessons/01-two-service-skeleton.md)
+3. [查看完整課程目錄](docs/lessons/README.md)
 
 ## 會用到的技術
 
@@ -27,4 +28,5 @@ recovery。
 ## 目前進度
 
 - [x] Lesson 00：理解情境與系統架構
-- [ ] Lesson 01：建立兩個 Spring Boot services
+- [x] Lesson 01：建立兩個 Spring Boot services
+- [ ] Lesson 02：建立 Events 與 database migrations
