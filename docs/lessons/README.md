@@ -37,7 +37,7 @@ validation與Testcontainers。
 
 證據：migrations能在真實PostgreSQL執行，Event API tests通過。
 
-### Lesson 03 — 防止超賣
+### [Lesson 03 — 防止超賣](03-prevent-overselling.md)
 
 在Event row lock保護下建立Held Registrations，並以多threads、多connections
 證明capacity invariant。

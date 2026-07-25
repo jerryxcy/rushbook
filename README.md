@@ -16,7 +16,8 @@ recovery。
 1. [Lesson 00：5–10 分鐘看懂 RushBook](docs/lessons/00-design-the-system.md)
 2. [Lesson 01：建立 two-service skeleton](docs/lessons/01-two-service-skeleton.md)
 3. [Lesson 02：建立 Events 與 database migrations](docs/lessons/02-events-and-database-migrations.md)
-4. [查看完整課程目錄](docs/lessons/README.md)
+4. [Lesson 03：防止超賣](docs/lessons/03-prevent-overselling.md)
+5. [查看完整課程目錄](docs/lessons/README.md)
 
 ## 會用到的技術
 
@@ -31,4 +32,5 @@ recovery。
 - [x] Lesson 00：理解情境與系統架構
 - [x] Lesson 01：建立兩個 Spring Boot services
 - [x] Lesson 02：建立 Events 與 database migrations
-- [ ] Lesson 03：防止超賣
+- [x] Lesson 03：防止超賣
+- [ ] Lesson 04：完成 Registration lifecycle
