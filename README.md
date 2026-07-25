@@ -1,12 +1,30 @@
 # RushBook
 
-RushBook is a limited-slot reservation system for exploring correctness under
-burst traffic, reliable event delivery with Kafka, and production-style
-deployment on Kubernetes.
+RushBook 是一套限量名額活動報名系統，也是一個用來學習 **Kafka** 與
+**Kubernetes** 的實作專案。
 
-## Project goal
+## 情境
 
-When many users compete for a small number of slots, RushBook must never
-oversell. The project will build that invariant first, then add Kafka-based
-post-booking events, Kubernetes operations, observability, and failure tests.
+一場活動只有 **10 個名額**，卻有 **100 個人同時報名**。
 
+RushBook 必須保證不超賣，並在報名成功後透過 Kafka 通知其他服務。整套系統
+最後會部署到 Kubernetes，練習 deployment、scaling、observability 與 failure
+recovery。
+
+## 從這裡開始
+
+1. [Lesson 00：5–10 分鐘看懂 RushBook](docs/lessons/00-design-the-system.md)
+2. [查看完整課程目錄](docs/lessons/README.md)
+
+## 會用到的技術
+
+- Java 25、Spring Boot 4 與 Gradle
+- PostgreSQL、Spring JDBC 與 Flyway
+- Apache Kafka、Strimzi 與 KRaft
+- Docker、Kubernetes、kind 與 Helm
+- Prometheus、Grafana、Testcontainers 與 k6
+
+## 目前進度
+
+- [x] Lesson 00：理解情境與系統架構
+- [ ] Lesson 01：建立兩個 Spring Boot services

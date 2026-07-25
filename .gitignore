@@ -1,0 +1,28 @@
+.DS_Store
+.idea/
+.vscode/
+.gradle/
+build/
+**/build/
+out/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+kubeconfig*
+credentials.json
+service-account*.json
+*.auto.tfvars
+*.tfstate
+*.tfstate.*
+
+# Local diagnostics and generated artifacts
+*.log
+tmp/
