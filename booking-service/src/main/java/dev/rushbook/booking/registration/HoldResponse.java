@@ -3,14 +3,15 @@ package dev.rushbook.booking.registration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-sealed interface HoldResponse permits HeldRegistrationResponse, RejectedHoldResponse {}
+sealed interface HoldResponse permits ActiveRegistrationResponse, RejectedHoldResponse {}
 
-record HeldRegistrationResponse(String outcome, RegistrationResponse registration)
+record ActiveRegistrationResponse(String outcome, RegistrationResponse registration)
         implements HoldResponse {
 
-    static HeldRegistrationResponse from(Registration registration) {
-        return new HeldRegistrationResponse(
-                "HELD", RegistrationResponse.from(registration));
+    static ActiveRegistrationResponse from(Registration registration) {
+        return new ActiveRegistrationResponse(
+                registration.status().name(),
+                RegistrationResponse.from(registration));
     }
 }
 

@@ -17,7 +17,8 @@ recovery。
 2. [Lesson 01：建立 two-service skeleton](docs/lessons/01-two-service-skeleton.md)
 3. [Lesson 02：建立 Events 與 database migrations](docs/lessons/02-events-and-database-migrations.md)
 4. [Lesson 03：防止超賣](docs/lessons/03-prevent-overselling.md)
-5. [查看完整課程目錄](docs/lessons/README.md)
+5. [Lesson 04：完成 Registration lifecycle](docs/lessons/04-registration-lifecycle.md)
+6. [查看完整課程目錄](docs/lessons/README.md)
 
 ## 會用到的技術
 
@@ -33,4 +34,5 @@ recovery。
 - [x] Lesson 01：建立兩個 Spring Boot services
 - [x] Lesson 02：建立 Events 與 database migrations
 - [x] Lesson 03：防止超賣
-- [ ] Lesson 04：完成 Registration lifecycle
+- [x] Lesson 04：完成 Registration lifecycle
+- [ ] Lesson 05：讓 concurrency 證據可重複

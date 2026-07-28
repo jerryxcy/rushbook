@@ -37,22 +37,42 @@ class RegistrationRepository {
                 .optional();
     }
 
-    boolean hasHeldOrBookedRegistration(UUID eventId, String attendeeId) {
-        int matchingRegistrations =
-                jdbcClient
-                        .sql(
-                                """
-                                SELECT count(*)
-                                FROM booking.registrations
-                                WHERE event_id = :eventId
-                                  AND attendee_id = :attendeeId
-                                  AND status IN ('HELD', 'BOOKED')
-                                """)
-                        .param("eventId", eventId)
-                        .param("attendeeId", attendeeId)
-                        .query(Integer.class)
-                        .single();
-        return matchingRegistrations > 0;
+    Optional<Registration> findHeldOrBookedRegistration(UUID eventId, String attendeeId) {
+        return jdbcClient
+                .sql(
+                        """
+                        SELECT
+                            registration_id,
+                            event_id,
+                            attendee_id,
+                            status,
+                            expires_at,
+                            created_at,
+                            booking_id,
+                            confirmed_at
+                        FROM booking.registrations
+                        WHERE event_id = :eventId
+                          AND attendee_id = :attendeeId
+                          AND status IN ('HELD', 'BOOKED')
+                        """)
+                .param("eventId", eventId)
+                .param("attendeeId", attendeeId)
+                .query(RegistrationRepository::mapRegistration)
+                .optional();
+    }
+
+    void expireHeldRegistrations(UUID eventId) {
+        jdbcClient
+                .sql(
+                        """
+                        UPDATE booking.registrations
+                        SET status = 'EXPIRED'
+                        WHERE event_id = :eventId
+                          AND status = 'HELD'
+                          AND expires_at <= clock_timestamp()
+                        """)
+                .param("eventId", eventId)
+                .update();
     }
 
     int countOccupiedSpots(UUID eventId) {
@@ -101,7 +121,9 @@ class RegistrationRepository {
                             attendee_id,
                             status,
                             expires_at,
-                            created_at
+                            created_at,
+                            booking_id,
+                            confirmed_at
                         """)
                 .param("registrationId", registrationId)
                 .param("eventId", eventId)
@@ -109,6 +131,73 @@ class RegistrationRepository {
                 .param("holdPeriodSeconds", holdPeriodSeconds)
                 .query(RegistrationRepository::mapRegistration)
                 .single();
+    }
+
+    Optional<Registration> lockRegistration(UUID registrationId) {
+        return jdbcClient
+                .sql(
+                        """
+                        SELECT
+                            registration_id,
+                            event_id,
+                            attendee_id,
+                            status,
+                            expires_at,
+                            created_at,
+                            booking_id,
+                            confirmed_at
+                        FROM booking.registrations
+                        WHERE registration_id = :registrationId
+                        FOR UPDATE
+                        """)
+                .param("registrationId", registrationId)
+                .query(RegistrationRepository::mapRegistration)
+                .optional();
+    }
+
+    Optional<Registration> confirmHeldRegistration(UUID registrationId, UUID bookingId) {
+        return jdbcClient
+                .sql(
+                        """
+                        WITH confirmation AS MATERIALIZED (
+                            SELECT clock_timestamp() AS confirmed_at
+                        )
+                        UPDATE booking.registrations AS registration
+                        SET
+                            status = 'BOOKED',
+                            booking_id = :bookingId,
+                            confirmed_at = confirmation.confirmed_at
+                        FROM confirmation
+                        WHERE registration.registration_id = :registrationId
+                          AND registration.status = 'HELD'
+                          AND registration.expires_at > confirmation.confirmed_at
+                        RETURNING
+                            registration.registration_id,
+                            registration.event_id,
+                            registration.attendee_id,
+                            registration.status,
+                            registration.expires_at,
+                            registration.created_at,
+                            registration.booking_id,
+                            registration.confirmed_at
+                        """)
+                .param("registrationId", registrationId)
+                .param("bookingId", bookingId)
+                .query(RegistrationRepository::mapRegistration)
+                .optional();
+    }
+
+    void expireHeldRegistration(UUID registrationId) {
+        jdbcClient
+                .sql(
+                        """
+                        UPDATE booking.registrations
+                        SET status = 'EXPIRED'
+                        WHERE registration_id = :registrationId
+                          AND status = 'HELD'
+                        """)
+                .param("registrationId", registrationId)
+                .update();
     }
 
     private static Registration mapRegistration(ResultSet resultSet, int rowNumber)
@@ -119,7 +208,9 @@ class RegistrationRepository {
                 resultSet.getString("attendee_id"),
                 RegistrationStatus.valueOf(resultSet.getString("status")),
                 resultSet.getObject("expires_at", OffsetDateTime.class),
-                resultSet.getObject("created_at", OffsetDateTime.class));
+                resultSet.getObject("created_at", OffsetDateTime.class),
+                resultSet.getObject("booking_id", UUID.class),
+                resultSet.getObject("confirmed_at", OffsetDateTime.class));
     }
 
     record LockedEvent(int capacity, int holdPeriodSeconds) {}

@@ -22,10 +22,13 @@ class HoldService {
             return new HoldDecision.EventNotFound(eventId, attendeeId);
         }
         RegistrationRepository.LockedEvent lockedEvent = event.orElseThrow();
+        registrationRepository.expireHeldRegistrations(eventId);
 
-        if (registrationRepository.hasHeldOrBookedRegistration(eventId, attendeeId)) {
-            return new HoldDecision.Rejected(
-                    eventId, attendeeId, HoldRejectionReason.ACTIVE_REGISTRATION_EXISTS);
+        Optional<Registration> existingRegistration =
+                registrationRepository.findHeldOrBookedRegistration(eventId, attendeeId);
+        if (existingRegistration.isPresent()) {
+            return new HoldDecision.ActiveRegistration(
+                    existingRegistration.orElseThrow(), false);
         }
 
         if (registrationRepository.countOccupiedSpots(eventId) >= lockedEvent.capacity()) {
@@ -39,6 +42,6 @@ class HoldService {
                         eventId,
                         attendeeId,
                         lockedEvent.holdPeriodSeconds());
-        return new HoldDecision.Held(registration);
+        return new HoldDecision.ActiveRegistration(registration, true);
     }
 }

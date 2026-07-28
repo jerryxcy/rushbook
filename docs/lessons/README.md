@@ -44,7 +44,7 @@ validation與Testcontainers。
 
 證據：一百位Attendees競爭十個Spots，恰好十個Holds成功。
 
-### Lesson 04 — 完成Registration lifecycle
+### [Lesson 04 — 完成 Registration lifecycle](04-registration-lifecycle.md)
 
 加入per-Event Hold Period、lazy expiration、confirmation、duplicate-request
 behavior與conditional transitions。

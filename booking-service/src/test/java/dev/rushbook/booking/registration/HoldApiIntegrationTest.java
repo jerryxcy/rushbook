@@ -67,17 +67,15 @@ class HoldApiIntegrationTest {
     }
 
     @Test
-    void attendeeCannotOwnTwoActiveRegistrationsForOneEvent() throws Exception {
+    void repeatedHoldReturnsExistingActiveRegistration() throws Exception {
         UUID eventId = createEvent(2);
-        assertThat(postHold(eventId, "same-attendee").statusCode()).isEqualTo(201);
+        HttpResponse<String> firstHold = postHold(eventId, "same-attendee");
 
         HttpResponse<String> duplicate = postHold(eventId, "same-attendee");
 
-        assertThat(duplicate.statusCode()).isEqualTo(409);
-        assertThat(duplicate.body())
-                .contains(
-                        "\"outcome\":\"REJECTED\"",
-                        "\"reason\":\"ACTIVE_REGISTRATION_EXISTS\"");
+        assertThat(firstHold.statusCode()).isEqualTo(201);
+        assertThat(duplicate.statusCode()).isEqualTo(200);
+        assertThat(duplicate.body()).isEqualTo(firstHold.body());
     }
 
     @RepeatedTest(3)

@@ -9,4 +9,6 @@ record Registration(
         String attendeeId,
         RegistrationStatus status,
         OffsetDateTime expiresAt,
-        OffsetDateTime createdAt) {}
+        OffsetDateTime createdAt,
+        UUID bookingId,
+        OffsetDateTime confirmedAt) {}

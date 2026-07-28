@@ -24,9 +24,10 @@ class HoldController {
     ResponseEntity<HoldResponse> hold(
             @PathVariable UUID eventId, @Valid @RequestBody CreateHoldRequest request) {
         return switch (holdService.hold(eventId, request.attendeeId())) {
-            case HoldDecision.Held held ->
-                    ResponseEntity.status(HttpStatus.CREATED)
-                            .body(HeldRegistrationResponse.from(held.registration()));
+            case HoldDecision.ActiveRegistration active ->
+                    ResponseEntity.status(
+                                    active.created() ? HttpStatus.CREATED : HttpStatus.OK)
+                            .body(ActiveRegistrationResponse.from(active.registration()));
             case HoldDecision.Rejected rejected ->
                     ResponseEntity.status(HttpStatus.CONFLICT)
                             .body(RejectedHoldResponse.from(rejected));

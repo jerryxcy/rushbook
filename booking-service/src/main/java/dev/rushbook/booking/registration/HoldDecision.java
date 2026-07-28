@@ -4,7 +4,8 @@ import java.util.UUID;
 
 sealed interface HoldDecision {
 
-    record Held(Registration registration) implements HoldDecision {}
+    record ActiveRegistration(Registration registration, boolean created)
+            implements HoldDecision {}
 
     record Rejected(UUID eventId, String attendeeId, HoldRejectionReason reason)
             implements HoldDecision {}
