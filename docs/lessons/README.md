@@ -51,7 +51,7 @@ behavior與conditional transitions。
 
 證據：expiration與Confirm races只會得到一個合法結果。
 
-### Lesson 05 — 讓concurrency證據可重複
+### [Lesson 05 — 讓 concurrency 證據可重複](05-repeatable-concurrency-evidence.md)
 
 建立deterministic stress-style integration tests與k6 burst scenario。量測
 transaction latency並解釋Event row hotspot。
